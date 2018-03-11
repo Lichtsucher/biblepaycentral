@@ -107,6 +107,7 @@ INSTALLED_APPS = (
     'django.contrib.sitemaps',
     'django.contrib.staticfiles',
     'django.contrib.messages',
+    'django.contrib.humanize',
     'cms',
     'menus',
     'sekizai',
@@ -142,6 +143,7 @@ INSTALLED_APPS = (
 
     'biblepaycentral',
     'biblepaycentral.core',
+    'biblepaycentral.overview',
 
 )
 

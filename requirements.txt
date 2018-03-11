@@ -23,6 +23,7 @@ django-sekizai>=0.9
 six
 
 mysqlclient
+requests
 python-bitcoinrpc
 python-bitcoinlib
 python-memcached
