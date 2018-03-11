@@ -1,0 +1,4 @@
+*.pyc
+/env
+/biblepaycentral/settings/local.py
+/biblepaycentral/media/
