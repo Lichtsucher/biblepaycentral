@@ -144,6 +144,7 @@ INSTALLED_APPS = (
     'biblepaycentral',
     'biblepaycentral.core',
     'biblepaycentral.overview',
+    'biblepaycentral.podc',
 
 )
 
@@ -177,6 +178,8 @@ CMS_TEMPLATES = (
     ('sidebar_right.html', 'Sidebar Right'),
     ('submenu_left.html', 'Submenu Left')
 )
+
+
 
 CMS_PERMISSION = True
 

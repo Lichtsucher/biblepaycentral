@@ -1,0 +1,22 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Transaction hash</th>
+      <th scope="col">Block</th>
+      <!--<th scope="col">Recipients</th>-->
+      <th scope="col">Amount (BBP)</th>
+      <th scope="col">Timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for transaction in last_transaction %}
+    <tr>
+      <td><a href="http://explorer.biblepay.org:3001/tx/{{ transaction.txid }}" target="_blank">{{ transaction.txid }}</a></td>
+      <td><a href="http://explorer.biblepay.org:3001/block/{{ transaction.block_hash }}" target="_blank">{{ transaction.height }}</a></td>
+      <!--<td>{{ transaction.recipient_count }}</td>-->
+      <td>{{ transaction.amount }}</td>
+      <td>{{ transaction.timestamp }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

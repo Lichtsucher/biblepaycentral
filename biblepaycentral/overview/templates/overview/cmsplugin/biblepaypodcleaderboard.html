@@ -1,0 +1,24 @@
+{% load humanize %}
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Pos.</th>
+      <th scope="col">Username</th>
+      <th scope="col">Machines</th>
+      <th scope="col">RAC</th>
+      <th scope="col">Total Procs</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for entry in leaderboard %}
+    <tr>
+      <td>{{ forloop.counter }}.</td>
+      <td>{{ entry.rosettauser.username }}</td>
+      <td>{{ entry.machine_count }}</td>
+      <td>{{ entry.rac|intcomma }}</td>
+      <td>{{ entry.total_procs }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
