@@ -71,6 +71,38 @@
         bottom: 0px;
     }
 
+    /* used if two alert boxes are stacked on each other, to form one big two-segment box */
+    .alert.alert-top {
+        margin-bottom: 0px;
+        border-radius: 0.25rem 0.25rem 0rem 0rem;
+    }
+
+    .alert.alert-bottom {
+        border-radius: 0rem 0rem 0.25rem 0.25rem;
+    }
+
+    .alert.alert-bottom h3 {
+        font-size: 1.25rem;
+    }
+
+    .alert.alert-bottom.alert-success {
+        background-color: #f4fff6;
+    }
+
+    .show-payment-details {
+        text-align: center;
+    }
+
+    .show-payment-details .down_arrows {
+        color: #dedddd;
+        padding: 0 1rem 0 1rem;
+    }
+
+    .payment_help_text {
+        display: none;
+        color: gray;
+    }
+
     </style>
     
     {% render_block "css" %}

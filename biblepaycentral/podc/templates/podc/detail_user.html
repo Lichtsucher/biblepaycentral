@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+
+{% block content %}
+
+<div class="container">
+    <br>
+    <h1>User: {% if rosettauser.username %}{{ rosettauser.username }}{% else %}[No username found]{% endif %}</h1>
+    <table style="color: #757575">
+        <tr>
+            <td>CPID:</td>
+            <td>{{ rosettauser.cpid }}</td>
+        </tr>
+        <tr>
+            <td>Team:</td>
+            <td>Biblepay</td>
+        </tr>
+        <tr>
+            <td>Address:&nbsp;&nbsp;</td>
+            <td>{{ rosettauser.address }}</td>
+        </tr>
+        <tr>
+            <td>Position:</td>
+            <td>
+                {% if rosettauser.leaderboard_pos > 0 %}
+                  {{ rosettauser.leaderboard_pos }}. on the leaderboard
+                {% else %}
+                  -
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+    <br>
+
+    {% if receiver %}
+    <div class="alert alert-success alert-top" role="alert">
+        <h2>Next Payment</h2>
+        <div class="row">
+            <div class="col-sm" style="font-size: 120%">
+                <table>
+                    <tr>
+                        <td><strong>Reward:</strong>&nbsp;&nbsp;</td>
+                        <td>{{ receiver.reward|intcomma }} bbp <small>(estimated)</snall></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-sm">
+                <table>
+                    <tr>
+                        <td><strong>Superblock:</strong></td>
+                        <td>{{ superblock.height }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Block Budget:&nbsp;&nbsp;</strong></td>
+                        <td>{{ superblock.budget|intcomma }} bbp</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Time:&nbsp;&nbsp;</strong></td>
+                        <td>{{ superblock_time }} UTC (estimated)</td>
+                    </tr>                    
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="alert alert-success alert-bottom show-payment-details" role="alert">
+         <span class="down_arrows">&#x25BC; &#x25BC;</span><a href="Javascript: return false;" id="show_payment_details_link">Show details</a><span class="down_arrows">&#x25BC; &#x25BC;</span>
+    </div>
+    <div class="alert alert-success alert-bottom payment-details" style="display: none" role="alert">
+        <div class="subsegment">
+            <h3>Base information</h3>
+            <div class="row">
+                <div class="col-sm">
+                    <table>
+                        <tr>
+                            <td><strong>RAC</strong>:</td>
+                            <td>{{ receiver.avg_rac|intcomma }}</td>
+                        </tr>
+                        <tr class="payment_help_text">
+                            <td colspan="2">
+                                "Recent average Credit", a value given by rosetta for the work you had done. Learn more on <a href="https://en.wikipedia.org/wiki/BOINC_Credit_System" target="_blank">Wikipedia</a>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Biblepay RAC</strong>:&nbsp;&nbsp;</td>
+                            <td>{{ receiver.modified_rac|intcomma }}</td>
+                        </tr>
+                        <tr class="payment_help_text">
+                            <td colspan="2">
+                                Based on RAC, but with UTXO weight and Task weight taken into account. Both values can lower the Biblepay RAC as a percentage value.
+                                Example: If UTXO weight is 50, then the Biblepay RAC is half of the RAC. The Biblepay RAC is the important number for the share
+                                calculation.
+                            </td>
+                        </tr>                        
+                        <tr>
+                            <td><strong>Magnitude</strong></td>
+                            <td>{{ receiver.magnitude }} (&permil;)</td>
+                        </tr>
+                        <tr class="payment_help_text">
+                            <td colspan="2">
+                                Your per mill share of the whole superblock budget. Example 1 = 1 per mill (1/1000) of the whole superblock budget.
+                                Calculated by comparing your Biblepay RAC with the summed up RAC of all users in the Biblpay-Rosetta Team.
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-sm">
+                    <table>
+                        <tr>
+                            <td><strong>UTXO amount</strong>&nbsp;&nbsp;</td>
+                            <td>{{ receiver.utxo_amount|intcomma }} bbp</td>
+                        </tr>
+                        <tr class="payment_help_text">
+                            <td colspan="2">
+                                Your staking for this superblock.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>UTXO weight</strong></td>
+                            <td>{{ receiver.utxo_weight }} (%)</td>
+                        </tr>
+                        <tr class="payment_help_text">
+                            <td colspan="2">
+                                A percent value, should always be 100%. If not, your UTXO amount was to low. 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Task weight</strong></td>
+                            <td>{{ receiver.task_weight }} (%)</td>
+                        </tr>
+                        <tr class="payment_help_text">
+                            <td colspan="2">
+                                A percent value that defines how many of your rosetta tasks where accepted by the Sanctuaries. Should always be 100%
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="container" style="text-align: right">
+                <button type="button" class="btn btn-secondary btn-sm" id="show_help_texts">Show help texts</button>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    
+    <div class="alert alert-warning" role="alert">
+        <h2>Next Payment</h2>
+
+        <p>No data for your account were found in the next superblock.</p>
+
+        <div class="row">
+            <div class="col-sm" style="font-size: 120%">
+                <strong>Reward:</strong> 0
+            </div>
+            <div class="col-sm">
+                <strong>Superblock:</strong> {{ superblock.height }}<br>
+                <strong>Block Budget:</strong> {{ superblock.budget|intcomma }} bbp
+            </div>
+        </div>
+    </div>
+    
+    {% endif %}
+
+<br>
+<h2>History</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Superblock</th>
+            <th scope="col">Reward (BBP)</th>
+            <th scope="col">Magnitude</th>
+            <th scope="col">RAC</th>
+            <th scope="col">Biblepay RAC</th>
+            <th scope="col">UTXO amount</th>
+            <th scope="col">UTXO weight</th>
+            <th scope="col">Task weight</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entry in superblockreceiver %}
+        <tr>
+            <td>{{ entry.superblock_id }}</td>
+            <td>{{ entry.reward|intcomma }}</td>
+            <td>{{ entry.magnitude }}</td>
+            <td>{{ entry.avg_rac|intcomma }}</td>
+            <td>{{ entry.modified_rac|intcomma }}</td>
+            <td>{{ entry.utxo_amount|intcomma }}</td>
+            <td>{{ entry.utxo_weight }}</td>
+            <td>{{ entry.task_weight }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</div>
+
+<script>
+    $('#show_payment_details_link').click(function() {
+        $('.show-payment-details').hide();
+        $('.payment-details').show();
+        return false;
+    })
+
+    $('#show_help_texts').click(function() {
+        $('.payment_help_text').show();
+        $('#show_help_texts').hide();
+        return false;
+    })
+</script>
+
+{% endblock %}

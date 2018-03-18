@@ -2,3 +2,4 @@
 
 # updates the leaderboard via a webservice of the main pool
 1 * * * * celery /srv/biblepaycentral_env/bin/python3 /srv/biblepaycentral/manage.py import_podc_leaderboard
+1 * * * * celery /srv/biblepaycentral_env/bin/python3 /srv/biblepaycentral/manage.py import_podc_superblock

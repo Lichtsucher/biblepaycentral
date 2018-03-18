@@ -35,6 +35,9 @@ class BiblePayRpcClient(object):
     def getblock(self, block_hash):
         return self.rpc.getblock(block_hash)
     
+    def getsuperblockbudget(self, height):
+        return self.rpc.getsuperblockbudget(int(height))
+
     def getrawtransaction(self, txid, decoded=False):
         decoded_s = 0
         if decoded:

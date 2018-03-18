@@ -13,8 +13,8 @@
   <tbody>
     {% for entry in leaderboard %}
     <tr>
-      <td>{{ forloop.counter }}.</td>
-      <td>{{ entry.rosettauser.username }}</td>
+      <td><a href="{% url 'podc_detail_user' entry.rosettauser.id %}">{{ forloop.counter }}.</a></td>
+      <td><a href="{% url 'podc_detail_user' entry.rosettauser.id %}">{{ entry.rosettauser.username }}</a></td>
       <td>{{ entry.machine_count }}</td>
       <td>{{ entry.rac|intcomma }}</td>
       <td>{{ entry.total_procs }}</td>

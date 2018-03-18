@@ -9,6 +9,7 @@ from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.static import serve
+from biblepaycentral.podc.views import detail_user, find_user
 
 admin.autodiscover()
 
@@ -19,6 +20,8 @@ urlpatterns = [
 
 urlpatterns += i18n_patterns(
     url(r'^admin/', include(admin.site.urls)),  # NOQA
+    url('podc/user/(?P<rosettaid>\d+)/', detail_user, name="podc_detail_user"),
+    url('podc/find_user/', find_user, name="podc_find_user"),
     url(r'^', include('cms.urls')),
 )
 

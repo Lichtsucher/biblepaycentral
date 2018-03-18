@@ -10,6 +10,26 @@ from biblepaycentral.overview.models import BiblepayLastBlocksModel, BiblepayPoD
 from biblepaycentral.overview.statistics import get_masternode_count, get_masternode_revenue, get_masternode_rio_percent
 from biblepaycentral.podc.models import Leaderboard
 
+
+@plugin_pool.register_plugin
+class BiblepayPoDCLookup(CMSPluginBase):
+    model = CMSPlugin
+    render_template = "overview/cmsplugin/biblepaypodclookup.html"
+    cache = True
+
+@plugin_pool.register_plugin
+class BiblepayPoDCActiveTeamMembers(CMSPluginBase):
+    model = CMSPlugin
+    render_template = "overview/cmsplugin/biblepaypodcactiveteammembers.html"
+    cache = True
+
+    def render(self, context, instance, placeholder):
+        context = super().render(context, instance, placeholder)
+        context.update({
+            'team_members': Leaderboard.objects.all().count()
+        })
+        return context
+
 @plugin_pool.register_plugin
 class BiblepayPoDCNextBudget(CMSPluginBase):
     model = CMSPlugin
