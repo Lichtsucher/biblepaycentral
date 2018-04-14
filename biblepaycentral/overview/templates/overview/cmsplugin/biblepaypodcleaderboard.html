@@ -1,6 +1,6 @@
 {% load humanize %}
 
-<table class="table">
+<table class="table responsive">
   <thead>
     <tr>
       <th scope="col">Pos.</th>
@@ -13,11 +13,11 @@
   <tbody>
     {% for entry in leaderboard %}
     <tr>
-      <td><a href="{% url 'podc_detail_user' entry.rosettauser.id %}">{{ forloop.counter }}.</a></td>
-      <td><a href="{% url 'podc_detail_user' entry.rosettauser.id %}">{{ entry.rosettauser.username }}</a></td>
-      <td>{{ entry.machine_count }}</td>
-      <td>{{ entry.rac|intcomma }}</td>
-      <td>{{ entry.total_procs }}</td>
+      <td data-label="Position" scope="row"><a href="{% url 'podc_detail_user' entry.rosettauser.id %}">{{ forloop.counter }}.</a></td>
+      <td data-label="Username"><a href="{% url 'podc_detail_user' entry.rosettauser.id %}">{{ entry.rosettauser.username }}</a></td>
+      <td data-label="Machines">{{ entry.machine_count }}</td>
+      <td data-label="RAC">{{ entry.rac|intcomma }}</td>
+      <td data-label="Total Procs">{{ entry.total_procs }}</td>
     </tr>
     {% endfor %}
   </tbody>

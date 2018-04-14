@@ -23,6 +23,9 @@ class BiblePayRpcClient(object):
     def __init__(self, network):
         self.rpc = biblepay_client_factory(network)
 
+    def getgovernanceinfo(self):
+        return self.rpc.getgovernanceinfo()
+
     def getblockcount(self):
         return self.rpc.getblockcount()
 

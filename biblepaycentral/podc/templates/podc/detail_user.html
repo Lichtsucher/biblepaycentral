@@ -7,30 +7,38 @@
 <div class="container">
     <br>
     <h1>User: {% if rosettauser.username %}{{ rosettauser.username }}{% else %}[No username found]{% endif %}</h1>
-    <table style="color: #757575">
-        <tr>
-            <td>CPID:</td>
-            <td>{{ rosettauser.cpid }}</td>
-        </tr>
-        <tr>
-            <td>Team:</td>
-            <td>Biblepay</td>
-        </tr>
-        <tr>
-            <td>Address:&nbsp;&nbsp;</td>
-            <td>{{ rosettauser.address }}</td>
-        </tr>
-        <tr>
-            <td>Position:</td>
-            <td>
-                {% if rosettauser.leaderboard_pos > 0 %}
-                  {{ rosettauser.leaderboard_pos }}. on the leaderboard
-                {% else %}
-                  -
-                {% endif %}
-            </td>
-        </tr>
-    </table>
+    
+    <div class="row">
+            <div class="col-sm">
+                <table style="color: #757575">
+                    <tr>
+                        <td>Position:</td>
+                        <td>
+                            {% if rosettauser.leaderboard_pos > 0 %}
+                              {{ rosettauser.leaderboard_pos }}. on the leaderboard
+                            {% else %}
+                              -
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Team:</td>
+                        <td>Biblepay</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-sm">
+                <table style="color: #757575">
+                    <tr>
+                        <td>CPID: {{ rosettauser.cpid }}</td>
+                    </tr>
+                    <tr>
+                        <td>Address: {{ rosettauser.address }}</td>
+                    </tr>
+                </table>
+            </div>            
+    </div>
+    
     <br>
 
     {% if receiver %}
@@ -166,7 +174,7 @@
 <br>
 <h2>History</h2>
 
-<table class="table">
+<table class="table responsive">
     <thead>
         <tr>
             <th scope="col">Superblock</th>
@@ -182,14 +190,14 @@
     <tbody>
         {% for entry in superblockreceiver %}
         <tr>
-            <td>{{ entry.superblock_id }}</td>
-            <td>{{ entry.reward|intcomma }}</td>
-            <td>{{ entry.magnitude }}</td>
-            <td>{{ entry.avg_rac|intcomma }}</td>
-            <td>{{ entry.modified_rac|intcomma }}</td>
-            <td>{{ entry.utxo_amount|intcomma }}</td>
-            <td>{{ entry.utxo_weight }}</td>
-            <td>{{ entry.task_weight }}</td>
+            <td data-label="Superblock">{{ entry.superblock_id }}</td>
+            <td data-label="Reward (BBP)">{{ entry.reward|intcomma }}</td>
+            <td data-label="Magnitude">{{ entry.magnitude }}</td>
+            <td data-label="RAC">{{ entry.avg_rac|intcomma }}</td>
+            <td data-label="Biblepay RAC">{{ entry.modified_rac|intcomma }}</td>
+            <td data-label="UTXO amount">{{ entry.utxo_amount|intcomma }}</td>
+            <td data-label="UTXO weight">{{ entry.utxo_weight }}</td>
+            <td data-label="Task weight">{{ entry.task_weight }}</td>
         </tr>
         {% endfor %}
     </tbody>

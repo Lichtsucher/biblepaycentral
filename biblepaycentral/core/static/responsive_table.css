@@ -1,0 +1,60 @@
+table.responsive td.only-responsive {
+   display: none;
+}
+
+@media screen and (max-width: 600px) {
+  table.responsive {
+    border: 0;
+  }
+
+  table.responsive caption {
+    font-size: 1.3em;
+  }
+  
+  table.responsive td.only-responsive {
+    display: block;
+  }
+
+  table.responsive td.non-responsive {
+    display: none;
+  }
+  
+  table.responsive thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  
+  table.responsive tr {
+    border: 2px solid #ddd;
+    display: block;
+    margin-bottom: .625em;
+  }
+  
+  table.responsive td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+    border-top: 0px;
+  }
+  
+  table.responsive td::before {
+    /*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+  }
+  
+  table.responsive td:last-child {
+    border-bottom: 0px;
+  }
+}

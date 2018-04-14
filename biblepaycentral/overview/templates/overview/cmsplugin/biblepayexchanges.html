@@ -1,6 +1,6 @@
 {% load humanize %}
 
-<table class="table">
+<table class="table responsive">
   <thead>
     <tr>
       <th scope="col">Exchange</th>
@@ -13,11 +13,11 @@
   <tbody>
     {% for exchange in exchanges %}
     <tr>
-      <td><a href="{{ exchange.url }}" target="_blank">{{ exchange.name }}</a></td>
+      <td data-label="Exchange"><a href="{{ exchange.url }}" target="_blank">{{ exchange.name }}</a></td>
       <!--<td>BBP {{ exchange.usd_volume24h }}</td> -->
-      <td>$&nbsp;{{ exchange.usd_price }} {% if exchange.usd_price_var != '' %}({{ exchange.usd_price_var }}%){% endif %}</td>
-      <td>{{ exchange.btc_volume24h }}</td>
-      <td>{{ exchange.btc_price|stringformat:".8f" }} {% if exchange.btc_price_var != '' %}({{ exchange.btc_price_var }}%){% endif %}</td>
+      <td data-label="USD/Price">$&nbsp;{{ exchange.usd_price }} {% if exchange.usd_price_var != '' %}({{ exchange.usd_price_var }}%){% endif %}</td>
+      <td data-label="Volume/(24h)">{{ exchange.btc_volume24h }}</td>
+      <td data-label="BTC/Price">{{ exchange.btc_price|stringformat:".8f" }} {% if exchange.btc_price_var != '' %}({{ exchange.btc_price_var }}%){% endif %}</td>
     </tr>
     {% endfor %}
 </table>

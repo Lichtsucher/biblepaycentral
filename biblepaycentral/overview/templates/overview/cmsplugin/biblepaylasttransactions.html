@@ -1,4 +1,4 @@
-<table class="table">
+<table class="table responsive">
   <thead>
     <tr>
       <th scope="col">Transaction hash</th>
@@ -11,11 +11,13 @@
   <tbody>
     {% for transaction in last_transaction %}
     <tr>
-      <td><a href="http://explorer.biblepay.org:3001/tx/{{ transaction.txid }}" target="_blank">{{ transaction.txid }}</a></td>
-      <td><a href="http://explorer.biblepay.org:3001/block/{{ transaction.block_hash }}" target="_blank">{{ transaction.height }}</a></td>
+      <td data-label="Hash" class="only-responsive"><a href="http://explorer.biblepay.org:3001/tx/{{ transaction.txid }}" target="_blank">{{ transaction.txid|slice:"0:24" }}...</a></td>
+      <td data-label="Hash" class="non-responsive"><a href="http://explorer.biblepay.org:3001/tx/{{ transaction.txid }}" target="_blank">{{ transaction.txid }}</a></td>
+
+      <td data-label="Block"><a href="http://explorer.biblepay.org:3001/block/{{ transaction.block_hash }}" target="_blank">{{ transaction.height }}</a></td>
       <!--<td>{{ transaction.recipient_count }}</td>-->
-      <td>{{ transaction.amount }}</td>
-      <td>{{ transaction.timestamp }}</td>
+      <td data-label="Amount (BBP)">{{ transaction.amount }}</td>
+      <td data-label="Timestamp">{{ transaction.timestamp }}</td>
     </tr>
     {% endfor %}
   </tbody>

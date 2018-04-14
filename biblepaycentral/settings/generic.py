@@ -145,6 +145,7 @@ INSTALLED_APPS = (
     'biblepaycentral.core',
     'biblepaycentral.overview',
     'biblepaycentral.podc',
+    'biblepaycentral.proposal',
 
 )
 
