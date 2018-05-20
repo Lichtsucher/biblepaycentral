@@ -1,0 +1,52 @@
+{% load humanize %}
+
+<div class="col-sm overview-blockchain">
+    <div class="card">
+        <div class="card-header">
+            Blockchain
+        </div>
+        <div class="card-body">
+            <div>Latest blocks</div>
+
+            <p>
+            {% for block in last_blocks %}
+            <a href="https://explorer.biblepay-central.org/block/{{ block.block_hash }}" target="_blank" class="btn btn-outline-info">{{ block.height }}</a>
+            {% endfor %}
+            </p>
+            
+            Latest transactions
+            <table class="table responsive">
+              <thead>
+                <tr>
+                  <th scope="col">Transaction hash</th>
+                  <th scope="col">Block</th>
+                  <!--<th scope="col">Recipients</th>-->
+                  <th scope="col">Amount (BBP)</th>
+                  <th scope="col">Age</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+                {% for transaction in last_transaction %}
+                <tr>
+                  <td data-label="Hash" class="non-responsive"><a href="http://explorer.biblepay.org:3001/tx/{{ transaction.txid }}" target="_blank">{{ transaction.txid|slice:"0:14" }}...</a></td>
+            
+                  <td data-label="Block"><a href="http://explorer.biblepay.org:3001/block/{{ transaction.block_hash }}" target="_blank">{{ transaction.height }}</a></td>
+                  <!--<td>{{ transaction.recipient_count }}</td>-->
+                  <td data-label="Amount (BBP)">{{ transaction.amount }}</td>
+                  <td data-label="Timestamp">{{ transaction.timestamp|naturaltime }}</td>
+                </tr>
+                {% endfor %}
+                
+              </tbody>
+            </table>            
+
+            <div>
+                <a href="http://explorer.biblepay.org:3001" target="_blank" class="btn btn-info bnt-extern">Biblepay Explorer</a>    
+                <a href="https://explorer.biblepay-central.org/" target="_blank" class="btn btn-info bnt-extern">Biblepay Central Explorer</a>    
+                <a href="http://explorebiblepay.com/" target="_blank" class="btn btn-info bnt-extern">ExplorerBiblepay.com</a>
+            </div>    
+            
+        </div>
+    </div>
+</div> 

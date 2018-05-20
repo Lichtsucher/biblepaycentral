@@ -1,0 +1,76 @@
+{% load humanize %}
+
+<div class="col-sm">
+    <div class="card">
+        <div class="card-header">
+            Proposals
+        </div>
+        <div class="card-body">
+
+            <table style="width: 100%">
+                <tr>
+                    <td><span style="font-weight: bold;">{{ data.next_superblock }}</span><br>Next Superblock</td>
+                    <td><span style="font-weight: bold;">{{ data.next_budget|intcomma }} BBP</span><br>Total Budget</td>
+                    <td><span style="font-weight: bold;">{{ data.estimated_time }} UTC</span><br>Estimated time</td>
+                </tr>
+            </table>
+
+            <div id="proposal_budget_chart" class="w-100" style="height: 400px;"></div>
+
+            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+            <script>
+            
+              /* first, we must ensure that the charst fits the screen. We calculate with some extra space of 30 px*/
+              var max_width = $( window ).width();
+              if (max_width < 730) {
+                $('#proposal_budget_chart').css('width', max_width-30);
+              }
+              
+              if (max_width < 380) {
+                $('#proposal_total_chart').css('width', max_width-30);
+              }  
+            
+              google.charts.load('current', {packages: ['corechart', 'bar']});
+              google.charts.setOnLoadCallback(drawProposalBudgetChart);
+            
+              
+              function drawProposalBudgetChart() {
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Time of Day');
+                data.addColumn('number', 'Total');
+                data.addColumn('number', 'Requested');
+            
+                /* ['Total', 15375000, 7242235.0000], */
+                data.addRows([
+            
+                  ['Charity', {{ data.budgets.charity }},{{ data.requested_budgets.charity }}],
+                  ['IT', {{ data.budgets.it }}, {{ data.requested_budgets.it }}],
+                  ['PR', {{ data.budgets.pr }}, {{ data.requested_budgets.pr }}],
+                  ['P2P', {{ data.budgets.p2p }}, {{ data.requested_budgets.p2p }}],
+                ]);
+            
+                var options = {
+                  legend: { position: 'top'},
+                  chartArea: {  width: "90%", height: "70%", left: '10%'},
+                  vAxis: {
+                      viewWindow: {
+                        min: 0
+                      }
+                  }
+                };
+            
+                var chart = new google.visualization.ColumnChart(document.getElementById('proposal_budget_chart'));
+                chart.draw(data, options);
+              }
+            
+            
+              window.onload = drawProposalBudgetChart;
+              window.onresize = drawProposalBudgetChart;
+              
+            </script>	  
+            
+            <a href="/en/proposals/" class="btn btn-primary" style="float: right">Go to Proposals</a>
+
+        </div>
+    </div>
+</div> 

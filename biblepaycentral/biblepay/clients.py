@@ -46,3 +46,20 @@ class BiblePayRpcClient(object):
         if decoded:
             decoded_s = 1
         return self.rpc.getrawtransaction(txid, decoded_s)
+    
+    def utxoreport(self, cpid):
+        return self.rpc.exec('utxoreport', cpid)
+        
+    def masternode_list_full(self):
+        masternodes_raw = self.rpc.masternode('list', 'full')
+        
+        masternodes = []
+        for txid, content in masternodes_raw.items():
+            masternodes.append({
+                'txid': txid,
+                'status': content[0:18].strip(),
+                'version': content[19:24],
+                'address': content[25:59],
+            })
+        
+        return masternodes

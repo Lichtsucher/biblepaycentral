@@ -6,6 +6,14 @@ from django.shortcuts import get_object_or_404, render, redirect
 from biblepaycentral.biblepay.clients import BiblePayRpcClient
 from biblepaycentral.podc.models import RosettaUser, Superblock, SuperblockReceiver
 from biblepaycentral.core.tools import estimate_blockhittime
+from biblepaycentral.podc.models import Leaderboard
+
+def leaderboard(request):
+    leaderboard = Leaderboard.objects.all().order_by('-rac')
+
+    return render(request, 'podc/leaderboard.html', {
+            'leaderboard': leaderboard,
+        })
 
 def find_user(request):
     search_value = request.POST.get('search')
@@ -73,4 +81,51 @@ def detail_user(request, rosettaid):
             'receiver': receiver,
             'superblockreceiver': superblockreceiver,
             'superblock_time': superblock_time,
+        })
+
+
+#################### AJAX
+
+def ajax_utxreport(request, cpid):
+    utxreport = []
+    
+    client = BiblePayRpcClient('main')
+    report = client.utxoreport(cpid)
+    
+    prev_day = ''
+    for entry in report:               
+        for s in ['(', ')', '[', ']', 'TXID=']:
+            entry = entry.replace(s, '')
+
+        data = entry.split(' ')
+
+        if len(data) < 4: # some other output in the json
+            continue
+        
+        d = data[1].split('-')
+        day = datetime.date(int(d[2]), int(d[0]), int(d[1]))
+
+        utxreport.append({
+            'block': data[0],
+            'day': day.strftime("%A %d. %B %Y"),
+            'time': data[2],
+            'utxo_weight': data[3],
+            'transaction_id': data[5],
+            'new_day': False,
+        })
+
+        utxreport.sort(key=lambda e: e['block'], reverse=True)
+        
+    # now we add a day info
+    prev_day = ''
+    for i, item in enumerate(utxreport):
+        new_day = False
+        if item['day'] != prev_day:
+            prev_day = item['day']
+            new_day = True
+
+        utxreport[i]['new_day'] = new_day
+
+    return render(request, 'podc/ajax_utxoreport.html', {
+            'utxreport': utxreport
         })

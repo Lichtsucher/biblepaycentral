@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+
+{% block content %}
+
+<h1>Masternodes</h1>
+
+<p>
+    <b>Count:</b>: {{ masternodes|length }}
+</p>
+
+
+<p>
+    <b>Status distribution:</b><br>
+    <ul>
+        {% for status, count in status_count.items %}        
+        <li>{{ status }}: {{ count }}</li>
+        {% endfor %}
+    </ul>
+</p>
+
+<br>
+
+<table class="table responsive">
+  <thead>
+    <tr>
+      <th scope="col">TX</th>
+      <th scope="col">Address</th>
+      <th scope="col">Status</th>
+      <th scope="col">Version</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    {% for masternode in masternodes %}
+    <tr>
+      <td data-label="TX" scope="row" style="font-size: 80%; word-break: break-all;"><a href="https://explorer.biblepay-central.org/tx/{{ masternode.txid|slice:"0:-2" }}" target="_blank">{{ masternode.txid }}</a></td>
+      <td data-label="Address"><a href="https://explorer.biblepay-central.org/address/{{ masternode.address }}" target="_blank">{{ masternode.address }}</a></td>
+      <td data-label="Status">{{ masternode.status }}</td>
+      <td data-label="Version">{{ masternode.version }}</td>
+    </tr>
+    {% endfor %}
+
+</table>    
+
+{% endblock %}

@@ -1,0 +1,73 @@
+{% load humanize %}
+
+<div class="col-sm overview-podc">
+    <div class="card">
+        <div class="card-header">
+            Proof of Distributed Computing
+        </div>
+        <div class="card-body">
+            <p>
+                With Proof of Distributed Computing, an alternative to the standard Proof of Work, miners work on solving problems for the Rosetta@Home project. They are not only getting coins, they also help making the world a little bit better.
+            </p>
+            
+            <table style="width: 100%">
+                <tr>
+                    <td><span style="font-weight: bold;">{{ next_superblock }}</span><br>Next Superblock</td>
+                    <td><span style="font-weight: bold;">{{ next_budget|intcomma }}</span><br>Budget</td>
+                    <td><span style="font-weight: bold;">{{ team_members }}</span><br>Team members</td>
+                </tr>
+            </table>
+            
+            <br>
+            
+            <a href="http://wiki.biblepay.org/Distributed_Computing" target="_blank" class="btn btn-info bnt-extern">Learn more about PoDC</a>
+            <a href="https://boinc.bakerlab.org/rosetta/team_display.php?teamid=15044" target="_blank" class="btn btn-info bnt-extern">Visit Rosetta@home Biblepay Team</a>
+            
+            <br><br>
+            <b>User lookup</b>
+    
+            <form action="/en/podc/find_user/" method="POST">
+                <input type="hidden" name="csrfmiddlewaretoken" value="LfPfkmw6XjlesFd52iZS3nruRrAU3NqTfGlS8m8U6wL4i4tRrGwIzAGA8Kl3DNxq">
+                <div class="input-group mb-3">
+                    <input type="text" name="search" class="form-control" placeholder="Find a user. Enter Name, CPID, Biblepay address or Rosetta ID">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">Lookup</button>
+                    </div>
+                </div>
+            </form>            
+            
+            <br>
+            <b>Leaderboard</b>
+            
+            <table class="table responsive">
+              <thead>
+                <tr>
+                  <th scope="col">Pos.</th>
+                  <th scope="col">Username</th>
+                  <th scope="col">Machines</th>
+                  <th scope="col">RAC</th>
+                  <th scope="col">Total Procs</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+                {% for entry in leaderboard %}
+                <tr>
+                  <td data-label="Position" scope="row"><a href="{% url 'podc_detail_user' entry.rosettauser.id %}">{{ forloop.counter }}.</a></td>
+                  <td data-label="Username"><a href="{% url 'podc_detail_user' entry.rosettauser.id %}">{{ entry.rosettauser.username }}</a></td>
+                  <td data-label="Machines">{{ entry.machine_count }}</td>
+                  <td data-label="RAC">{{ entry.rac|intcomma }}</td>
+                  <td data-label="Total Procs">{{ entry.total_procs }}</td>
+                </tr>
+                {% endfor %}
+
+            </table>
+            
+            <br>
+            <a href="/en/mining-how-to/" class="btn btn-primary" style="float: right; margin-left: 1em;">Read the Mining How-To</a>
+            <a href="{% url 'podc_leaderboard' %}" class="btn btn-primary" style="float: right">Go to full Leaderboard</a>
+            
+        </div>
+
+    </div>
+</div> 

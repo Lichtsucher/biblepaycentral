@@ -92,6 +92,10 @@ class Proposal(models.Model):
     # masternode_count as absolute_yes_count, or the proposal is not
     # accepted in the next superblock
     masternode_count = models.IntegerField(default=0)
+    
+    # used to disable entries that got removed from the main pool, but we want to keep
+    # them
+    active = models.BooleanField(default=True)
 
     def is_fundable(self):
         """ returns true if the amount of absolute_yes_count is at least 10%

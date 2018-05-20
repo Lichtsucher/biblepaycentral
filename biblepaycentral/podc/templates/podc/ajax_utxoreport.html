@@ -1,0 +1,28 @@
+{% load humanize %}
+
+<table class="table responsive">
+    <thead>
+        <tr>
+            <th scope="col">Block</th>
+            <th scope="col">Time</th>
+            <th scope="col">Utxo Weight</th>
+            <th scope="col">Transaction</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entry in utxreport %}
+        
+        {% if entry.new_day %}
+        <tr>
+            <th colspan="10" scope="col">{{ entry.day }}</th>
+        </tr>
+        {% endif %}
+        <tr>
+            <td data-label="Block">{{ entry.block }}</td>
+            <td data-label="Time">{{ entry.time }}</td>
+            <td data-label="Utxo Weight">{{ entry.utxo_weight|intcomma }}</td>
+            <td data-label="Transaction"><a target="_blank" href="https://explorer.biblepay-central.org/tx/{{ entry.transaction_id }}">{{ entry.transaction_id }}</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

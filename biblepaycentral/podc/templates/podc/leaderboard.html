@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    Proof of Distributed Computing
+    <h1>Leaderboard</h1>
+    
+    <br>
+    
+    <table class="table responsive">
+      <thead>
+        <tr>
+          <th scope="col">Pos.</th>
+          <th scope="col">Username</th>
+          <th scope="col">Machines</th>
+          <th scope="col">RAC</th>
+          <th scope="col">Total Procs</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        {% for entry in leaderboard %}
+        <tr>
+          <td data-label="Position" scope="row"><a href="{% url 'podc_detail_user' entry.rosettauser.id %}">{{ forloop.counter }}.</a></td>
+          <td data-label="Username"><a href="{% url 'podc_detail_user' entry.rosettauser.id %}">{{ entry.rosettauser.username }}</a></td>
+          <td data-label="Machines">{{ entry.machine_count }}</td>
+          <td data-label="RAC">{{ entry.rac|intcomma }}</td>
+          <td data-label="Total Procs">{{ entry.total_procs }}</td>
+        </tr>
+        {% endfor %}
+    
+    </table>    
+</div>
+{% endblock %}

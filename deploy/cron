@@ -4,3 +4,4 @@
 1 * * * * celery /srv/biblepaycentral_env/bin/python3 /srv/biblepaycentral/manage.py import_podc_leaderboard
 1 * * * * celery /srv/biblepaycentral_env/bin/python3 /srv/biblepaycentral/manage.py import_podc_superblock
 1 * * * * celery /srv/biblepaycentral_env/bin/python3 /srv/biblepaycentral/manage.py import_proposals --run-local
+1 * * * * celery /srv/biblepaycentral_env/bin/python3 /srv/biblepaycentral/manage.py update_masternodes --run-local

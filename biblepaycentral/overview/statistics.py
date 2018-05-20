@@ -6,19 +6,23 @@ from biblepaycentral.biblepay.clients import BiblePayRpcClient
 from biblepaycentral.proposal.models import Proposal
 
 @cache_memoize(timeout=3600)
-def get_nextsuperblock_proposal_data(network="main"):
+def get_nextsuperblock_proposal_data(network="main", block=None):
     client = BiblePayRpcClient(network)
 
     # next superblock and budget
-    sbdata = client.getgovernanceinfo()
+    if block is None:
+        sbdata = client.getgovernanceinfo()
+        next_superblock = int(sbdata['nextsuperblock'])
+    else:
+        next_superblock = int(block)
 
     data = {
-        'next_superblock': sbdata['nextsuperblock'],
-        'next_budget': int(sbdata['nextbudget']),
-    }
-
+        'next_superblock': next_superblock,
+        'next_budget': int(float(client.getsuperblockbudget(next_superblock))),
+    }    
+    
     # when do we expect this block?
-    data['estimated_time']  = estimate_blockhittime(sbdata['nextsuperblock'])
+    data['estimated_time']  = estimate_blockhittime(next_superblock)
 
     # budget per category
     data['budgets'] = {
@@ -37,17 +41,29 @@ def get_nextsuperblock_proposal_data(network="main"):
         'it': 0,
         'pr': 0,
         'p2p': 0,
+        'charity__requested': 0,
+        'it__requested': 0,
+        'pr__requested': 0,
+        'p2p__requested': 0,        
         'unspend': 0,
     }
 
-    proposals = Proposal.objects.filter(network=network, height__isnull=True)
+    if block is None:
+        proposals = Proposal.objects.filter(network=network, height__isnull=True, active=True)
+    else:
+        proposals = Proposal.objects.filter(network=network, height=block, active=True)
+    
+    
     for proposal in proposals:
         if proposal.expense_type == 'unknown':
             continue
 
-        if proposal.is_fundable():
+        data['requested_budgets'][proposal.expense_type+'__requested'] += proposal.amount
+        if proposal.is_fundable():            
             data['requested_budgets'][proposal.expense_type] += proposal.amount
             data['requested_budgets']['total'] += proposal.amount
+       
+            
 
     data['requested_budgets']['unspend'] = data['next_budget'] - data['requested_budgets']['total']
     if data['requested_budgets']['unspend'] < 0:
@@ -64,14 +80,14 @@ def get_nextsuperblock_proposal_data(network="main"):
     return data
 
 @cache_memoize(timeout=10)
-def get_last_blocks(entries_count):
+def get_last_blocks(count):
     client = BiblePayRpcClient('main')
 
     current_height = client.getblockcount()
 
     last_blocks = []
     # get current and 5 other blocks
-    for height in range(current_height, current_height-entries_count, -1):
+    for height in range(current_height, current_height-count, -1):
         block_hash = client.getblockhash(height)
 
         last_blocks.append({
@@ -82,7 +98,7 @@ def get_last_blocks(entries_count):
     return last_blocks
 
 @cache_memoize(timeout=30)
-def get_last_transactions():
+def get_last_transactions(count=10):
     client = BiblePayRpcClient('main')
 
     height = client.getblockcount()
@@ -94,7 +110,6 @@ def get_last_transactions():
     while run:
         block_hash = client.getblockhash(height)
         block_data = client.getblock(block_hash)
-
 
         for tx in block_data.get('tx', []):
             tx_data = client.getrawtransaction(tx, True)
@@ -113,7 +128,7 @@ def get_last_transactions():
             })
 
             current_tx += 1
-            if current_tx > 10:
+            if current_tx > count:
                 run = False
                 break
 
@@ -202,9 +217,14 @@ def get_masternode_count():
     count = -1
     try:
         client = BiblePayRpcClient('main')
-        count = len(client.rpc.masternodelist())
+        
+        count = 0
+        for key, value in client.rpc.masternodelist().items():
+            if value == 'ENABLED':
+                count += 1
     except:
         pass
+    
 
     return count
 

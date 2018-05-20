@@ -1,0 +1,38 @@
+{% load humanize %}
+
+<div class="col-sm">
+    <div class="card">
+        <div class="card-header">
+            Masternodes / Sanctuaries
+        </div>
+        <div class="card-body">
+            <table style="width: 100%">
+                <tr>
+                    <td style="width: 33%">
+                        <div style="font-size: 200%">{{ masternodecount }}</div>
+                        Sanstuaries                        
+                    </td>
+                    <td style="width: 33%">
+                        <div style="font-size: 200%">{{ rio }}%</div>
+                        ROI/year                        
+                    </td>
+                    <td style="width: 33%">
+                        <div style="font-size: 200%">{{ revenue|floatformat|intcomma }} BBP</div>
+                        Avg daily reward                  
+                    </td>                    
+                </tr>
+                <tr>
+                    <td>
+                        <b>Cost:</b> 1,550,001 BBP<br>           
+                    </td>
+                    <td></td>
+                    <td>
+                        <br>
+                        <a href="{% url 'masternodes_masternodes' %}" class="btn btn-primary" style="float: right">Go to Masternode list</a>
+                    </td>
+                </tr>                
+            </table>
+            
+        </div>
+    </div>
+</div>

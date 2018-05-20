@@ -28,6 +28,11 @@ def import_proposals():
     # converts the result to a list/dict combination.
     # we don't catch any errors here, as the task should fail if this is not ok
     content = pool_cvs_to_list(r.content.decode('utf-8'))
+    
+    # we deactivate all Proposals that are not already part of a superblock, as these can be
+    # deleted at any time from the main pool. We reactivate the ones we found in the file
+    # from the main pool
+    Proposal.objects.filter(height__isnull=True).update(active=False)
 
     for line in content:
         proposal, created = Proposal.objects.get_or_create(id=line['id'], defaults={'gobjectid': line['GobjectID']})
@@ -58,6 +63,8 @@ def import_proposals():
         proposal.submit_txid = line['SubmitTxId']
         proposal.superblock_txid = line['SuperBlockTxId']
         proposal.trigger_txid = line['TriggerTxId']
+        
+        proposal.active = True
 
         proposal.height = None
         if line['Height'] != '':
@@ -72,12 +79,12 @@ def import_proposals():
         if line['Submitted']:
             proposal.submitted = True
 
-        proposal.yes_count = line['YesCount']
-        proposal.no_count = line['NoCt']
-        proposal.abstain_count = line['AbstainCount']
-        proposal.absolute_yes_count = line['AbsoluteYesCount']
+        proposal.yes_count = line['YesCount'] or 0
+        proposal.no_count = line['NoCt'] or 0
+        proposal.abstain_count = line['AbstainCount'] or 0
+        proposal.absolute_yes_count = line['AbsoluteYesCount'] or 0
 
-        proposal.masternode_count = line['MasternodeCount']
+        proposal.masternode_count = line['MasternodeCount'] or 0
 
         proposal.save()
 

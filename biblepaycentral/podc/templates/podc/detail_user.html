@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load humanize %}
-
+{% load static %}
 
 {% block content %}
 
@@ -172,36 +172,55 @@
     {% endif %}
 
 <br>
-<h2>History</h2>
 
-<table class="table responsive">
-    <thead>
-        <tr>
-            <th scope="col">Superblock</th>
-            <th scope="col">Reward (BBP)</th>
-            <th scope="col">Magnitude</th>
-            <th scope="col">RAC</th>
-            <th scope="col">Biblepay RAC</th>
-            <th scope="col">UTXO amount</th>
-            <th scope="col">UTXO weight</th>
-            <th scope="col">Task weight</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for entry in superblockreceiver %}
-        <tr>
-            <td data-label="Superblock">{{ entry.superblock_id }}</td>
-            <td data-label="Reward (BBP)">{{ entry.reward|intcomma }}</td>
-            <td data-label="Magnitude">{{ entry.magnitude }}</td>
-            <td data-label="RAC">{{ entry.avg_rac|intcomma }}</td>
-            <td data-label="Biblepay RAC">{{ entry.modified_rac|intcomma }}</td>
-            <td data-label="UTXO amount">{{ entry.utxo_amount|intcomma }}</td>
-            <td data-label="UTXO weight">{{ entry.utxo_weight }}</td>
-            <td data-label="Task weight">{{ entry.task_weight }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="history-tab" data-toggle="tab" href="#history" role="tab" aria-controls="home" aria-selected="true">History</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="podcupdates-tab" data-toggle="tab" href="#podcupdates" role="tab" aria-controls="profile" aria-selected="false">PoDC Updates</a>
+  </li>
+</ul>
+
+<div class="tab-content" id="myTabContent">
+    
+    <br>    
+    <div class="tab-pane fade show active" id="history" role="tabpanel" aria-labelledby="history-tab">
+        <table class="table responsive">
+            <thead>
+                <tr>
+                    <th scope="col">Superblock</th>
+                    <th scope="col">Reward (BBP)</th>
+                    <th scope="col">Magnitude</th>
+                    <th scope="col">RAC</th>
+                    <th scope="col">Biblepay RAC</th>
+                    <th scope="col">UTXO amount</th>
+                    <th scope="col">UTXO weight</th>
+                    <th scope="col">Task weight</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in superblockreceiver %}
+                <tr>
+                    <td data-label="Superblock">{{ entry.superblock_id }}</td>
+                    <td data-label="Reward (BBP)">{{ entry.reward|intcomma }}</td>
+                    <td data-label="Magnitude">{{ entry.magnitude }}</td>
+                    <td data-label="RAC">{{ entry.avg_rac|intcomma }}</td>
+                    <td data-label="Biblepay RAC">{{ entry.modified_rac|intcomma }}</td>
+                    <td data-label="UTXO amount">{{ entry.utxo_amount|intcomma }}</td>
+                    <td data-label="UTXO weight">{{ entry.utxo_weight }}</td>
+                    <td data-label="Task weight">{{ entry.task_weight }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="tab-pane fade" id="podcupdates" role="tabpanel" aria-labelledby="podcupdates-tab">
+        <img src="{% static 'loading.gif' %}" class="loading-placeholder"/>
+    </div>
+    
+</div>        
 
 </div>
 
@@ -217,6 +236,14 @@
         $('#show_help_texts').hide();
         return false;
     })
+    
+    $( document ).ready(function() {
+        console.log('xxx1');
+        $.get( "/en/podc/ajax/utxoreport/{{ rosettauser.cpid }}/", function( data ) {
+            console.log('xxx');
+            $( "#podcupdates" ).html( data );
+        });
+    });
 </script>
 
 {% endblock %}

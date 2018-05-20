@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+
+<h1>Proposals</h1>
+
+<br>
+<h3 class="superblock-header">Superblock: {{ data.next_superblock }}</h3>
+
+<small>
+{% if older_block != None %}
+<a href="{% url 'proposals_height' older_block %}">Older Superblock</a>
+{% else %}
+Older Superblock
+{% endif %}
+
+&nbsp;&nbsp;|&nbsp;&nbsp;
+
+{% if newer_block != None %}
+<a href="{% url 'proposals_height' newer_block %}">Newer Superblock</a>
+{% else %}
+
+{% if newer_block == None and requested_block != None %}
+<a href="{% url 'proposals' %}">Newer Superblock</a>
+{% else %}
+Newer Superblock
+{% endif %}
+
+{% endif %}
+</small>
+
+<br>
+<br>
+
+<p>
+<b>Statistics:</b><br>
+
+Time: {{ data.estimated_time }} UTC {% if requested_block == None %}(estimated){% endif%}<br>
+Budget: {{ data.next_budget|intcomma }} BBP
+</p>
+
+
+<div class="row" style="fill: white;">
+    <div class="col-sm">
+      
+      <div class="card">
+        <div class="card-header">
+            Current Budget
+        </div>
+        <div class="card-body">
+          <div id="proposal_budget_chart" style="height: 400px; width: 700px;"></div>
+        </div>
+      </div>
+        
+    </div>
+    <div class="col-sm">
+      
+      <div class="card">
+        <div class="card-header">
+            Total of funded Proposals
+        </div>
+        <div class="card-body">
+          <div id="proposal_total_chart" style="height: 400px; width: 350px;"></div>
+        </div>
+      </div>      
+      
+        
+    </div>
+</div>
+
+
+
+<table class="table responsive">
+  <thead>
+    <tr>      
+      <th scope="col">Name</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Yes</th>
+      <th scope="col">No</th>
+      <th scope="col">Total</th>
+    </tr>
+  </thead>
+  
+  {% for expense_type, props in proposals.items %}
+
+  <tr>
+    <th colspan="5">{{ expense_type }}</th>
+  </tr>
+  
+    {% for proposal in props %}
+    <tr class="{% if proposal.absolute_yes_count < 0 %}table-warning{% endif %} {% if proposal.is_fundable %}table-success{% endif %}">
+        <td data-label="Name">{{ proposal.name }} <small>(<a href="{{ proposal.url }}" target="_blank">Proposal</a>)</small></td>
+        <td data-label="Amount">{{ proposal.amount }}</td>
+        <td data-label="Yes">{{ proposal.yes_count }}</td>
+        <td data-label="No">{{ proposal.no_count }}</td>
+        <td data-label="Total">{{ proposal.absolute_yes_count }}</td>
+    </tr>
+    {% endfor %}
+  {% endfor %}
+</table>
+
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+
+  /* first, we must ensure that the charst fits the screen. We calculate with some extra space of 30 px*/
+  var max_width = $( window ).width();
+  if (max_width < 730) {
+    $('#proposal_budget_chart').css('width', max_width-30);
+  }
+  
+  if (max_width < 380) {
+    $('#proposal_total_chart').css('width', max_width-30);
+  }  
+
+  google.charts.load('current', {packages: ['corechart', 'bar']});
+  google.charts.setOnLoadCallback(drawProposalBudgetChart);
+  google.charts.setOnLoadCallback(drawProposalTotalChart);
+
+  function drawProposalBudgetChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Time of Day');
+    data.addColumn('number', 'Total');
+    data.addColumn('number', 'Requested');
+    data.addColumn('number', 'Funded');
+    
+
+    /* ['Total', {{ data.next_budget }}, {{ data.requested_budgets.total }}], */
+    data.addRows([
+
+      ['Charity', {{ data.budgets.charity }},{{ data.requested_budgets.charity__requested }},{{ data.requested_budgets.charity }}],
+      ['IT', {{ data.budgets.it }}, {{ data.requested_budgets.it__requested }}, {{ data.requested_budgets.it }}],
+      ['PR', {{ data.budgets.pr }}, {{ data.requested_budgets.pr__requested }}, {{ data.requested_budgets.pr }}],
+      ['P2P', {{ data.budgets.p2p }}, {{ data.requested_budgets.p2p__requested }}, {{ data.requested_budgets.p2p }}],
+    ]);
+
+    var options = {
+      legend: { position: 'top'},
+      chartArea: {  width: "90%", height: "70%", left: '10%'},
+      vAxis: {
+          viewWindow: {
+            min: 0
+          }
+      }
+    };
+
+    var chart = new google.visualization.ColumnChart(document.getElementById('proposal_budget_chart'));
+    chart.draw(data, options);
+  }
+
+  function drawProposalTotalChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'BBP');
+    data.addColumn('number', 'Charity');
+    data.addColumn('number', 'IT');
+    data.addColumn('number', 'PR');
+    data.addColumn('number', 'P2P');
+    data.addColumn('number', 'Unused');
+
+    data.addRows([
+      ['Total', {{ data.requested_budgets.charity }}, {{ data.requested_budgets.it }}, {{ data.requested_budgets.pr }}, {{ data.requested_budgets.p2p }}, {{ data.requested_budgets.unspend }}],
+    ]);
+
+    var options = {
+      isStacked: true,
+      chartArea: {  width: "50%", height: "70%", left: '20%'},
+      vAxis: {
+          viewWindow: {
+            min: 0,
+            max: {{ data.next_budget }}
+          }
+      }
+    };
+
+    var chart = new google.visualization.ColumnChart(document.getElementById('proposal_total_chart'));
+    chart.draw(data, options);
+  }
+
+</script>
+
+{% endblock %}

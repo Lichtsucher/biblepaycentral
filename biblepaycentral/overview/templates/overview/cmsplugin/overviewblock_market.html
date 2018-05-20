@@ -1,0 +1,18 @@
+{% load humanize %}
+
+<div class="col-sm">
+    <div class="card">
+        <div class="card-header">
+            Market cap
+        </div>
+        <div class="card-body">
+            <h5 class="card-title" style="font-size: 350%; font-weight: 400;">{{ data.0.market_cap_usd|floatformat|intcomma }}<small style="font-size: 30%">USD</small></h5>
+            <p class="card-text">
+ 
+            </p>
+            <a href="https://coinmarketcap.com/currencies/biblepay/" target="_blank" class="btn btn-info bnt-extern">CoinMarketCap</a>
+            <a href="https://www.worldcoinindex.com/coin/biblepay" target="_blank" class="btn btn-info bnt-externy">WorldCoinIndex</a>
+            <a href="http://coincap.io/BBP" target="_blank" class="btn btn-info bnt-extern">CoinCap</a>
+        </div>
+    </div>
+</div> 
