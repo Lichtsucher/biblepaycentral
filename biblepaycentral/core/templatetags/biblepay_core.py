@@ -13,3 +13,8 @@ def current_biblepay_version():
         pass
 
     return version
+
+
+@register.filter
+def classname(obj):
+    return obj.__class__.__name__

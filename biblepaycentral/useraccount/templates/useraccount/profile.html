@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% load biblepay_core %}
+{% load emailalert %}
+
+{% block content %}
+
+    <h1>{{ user.username }}</h1>
+    <p>Profile</p>
+
+    <div class="row">
+        <div class="col">
+    
+            <div class="card">
+                <div class="card-header">Basic data</div>
+
+                <div class="card-body">
+                    Username: {{ user.username }}<br>
+                    E-Mail: {{ user.email }}<br>
+                    <br>
+                    <a href="{% url 'password_change' %}">Change password</a>
+                </div>  
+            </div>
+            
+        </div>
+    </div>
+  
+    <div class="card">
+        <div class="card-header">Alerts</div>
+
+        <div class="card-body">
+            <table class="table responsive">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Entry</th>
+                        <th scope="col">Created at</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    {% for emailalert in emailalerts %}
+                    <tr>
+                        <td data-label="Alert">{% register_alert_button emailalert.content_type_id  emailalert.object_id 'profile' %}</td>
+                        <td data-label="Type">{{ emailalert.content_object|classname }}</td>
+                        <td data-label="Entry" style="word-break:break-all;"><a href="{{ emailalert.content_object.get_absolute_url }}">{{ emailalert.content_object }}</a></td>
+                        <td data-label="Created at">{{ emailalert.inserted_at }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>  
+    </div>  
+  
+{% endblock %}

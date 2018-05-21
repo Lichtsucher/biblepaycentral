@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from django.urls import reverse
 
 EXPENSE_TYPES = (
     ('unknown', 'UNKNOWN'),
@@ -96,6 +97,12 @@ class Proposal(models.Model):
     # used to disable entries that got removed from the main pool, but we want to keep
     # them
     active = models.BooleanField(default=True)
+
+    def get_absolute_url(self):
+        return reverse('proposals')
+    
+    def __str__(self):
+        return '%s (%s)'% (self.name, self.expense_type)
 
     def is_fundable(self):
         """ returns true if the amount of absolute_yes_count is at least 10%

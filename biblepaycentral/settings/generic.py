@@ -70,7 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.tz',
                 'sekizai.context_processors.sekizai',
                 'django.template.context_processors.static',
-                'cms.context_processors.cms_settings'
+                'cms.context_processors.cms_settings',
             ],
             'loaders': [
                 'django.template.loaders.filesystem.Loader',
@@ -94,10 +94,12 @@ MIDDLEWARE = (
     'cms.middleware.user.CurrentUserMiddleware',
     'cms.middleware.page.CurrentPageMiddleware',
     'cms.middleware.toolbar.ToolbarMiddleware',
-    'cms.middleware.language.LanguageCookieMiddleware'
+    'cms.middleware.language.LanguageCookieMiddleware',
 )
 
 INSTALLED_APPS = (
+    'biblepaycentral.useraccount',
+    
     'djangocms_admin_style',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -140,13 +142,15 @@ INSTALLED_APPS = (
     'djangocms_bootstrap4.contrib.bootstrap4_picture',
     'djangocms_bootstrap4.contrib.bootstrap4_tabs',
     'djangocms_bootstrap4.contrib.bootstrap4_utilities',
-
+    
     'biblepaycentral',
     'biblepaycentral.core',
     'biblepaycentral.overview',
     'biblepaycentral.podc',
     'biblepaycentral.proposal',
     'biblepaycentral.masternodes',
+    
+    'biblepaycentral.emailalert',
 
 )
 
@@ -196,3 +200,7 @@ THUMBNAIL_PROCESSORS = (
     'filer.thumbnail_processors.scale_and_crop_with_subject_location',
     'easy_thumbnails.processors.filters'
 )
+
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'

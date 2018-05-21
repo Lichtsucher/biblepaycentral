@@ -12,6 +12,8 @@ from django.views.static import serve
 from biblepaycentral.podc.views import detail_user, find_user, ajax_utxreport, leaderboard
 from biblepaycentral.proposal.views import proposals
 from biblepaycentral.masternodes.views import masternodes
+from biblepaycentral.useraccount.views import signup, profile
+from biblepaycentral.emailalert.views import register_alert, drop_alert
 
 admin.autodiscover()
 
@@ -32,6 +34,14 @@ urlpatterns += i18n_patterns(
     
     url('proposals/(?P<block>\d+)/', proposals, name="proposals_height"),
     url('proposals/', proposals, name="proposals"),
+    
+    url('useraccount/signup', signup, name="signup"),
+    url('useraccount/profile', profile, name="profile"),
+    
+    url('emailalert/register_alert', register_alert, name="emailalert_register_alert"),
+    url('emailalert/drop_alert', drop_alert, name="emailalert_drop_alert"),
+    
+    url('accounts/', include('django.contrib.auth.urls')),
     
     url(r'^', include('cms.urls')),
 )

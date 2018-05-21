@@ -2,6 +2,7 @@ import datetime
 from django.db.models import Q
 from django.conf import settings
 from django.http import Http404
+from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404, render, redirect
 from biblepaycentral.biblepay.clients import BiblePayRpcClient
 from biblepaycentral.podc.models import RosettaUser, Superblock, SuperblockReceiver
@@ -10,9 +11,12 @@ from biblepaycentral.podc.models import Leaderboard
 
 def leaderboard(request):
     leaderboard = Leaderboard.objects.all().order_by('-rac')
+    
+    content_type = ContentType.objects.get_for_model(RosettaUser)
 
     return render(request, 'podc/leaderboard.html', {
             'leaderboard': leaderboard,
+            'content_type': content_type,
         })
 
 def find_user(request):

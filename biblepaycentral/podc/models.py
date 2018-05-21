@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from django.urls import reverse
 
 class RosettaUser(models.Model):
     username = models.CharField(max_length=200, default="UNKNOWN")
@@ -7,6 +8,12 @@ class RosettaUser(models.Model):
     team = models.IntegerField(default=0)
     address = models.CharField(max_length=100, default="")
     leaderboard_pos = models.IntegerField(default=0)
+    
+    def get_absolute_url(self):
+        return reverse('podc_detail_user', args=[self.id])
+    
+    def __str__(self):
+        return '%s, %s' % (self.username, self.cpid)
 
 class Leaderboard(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

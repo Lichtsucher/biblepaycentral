@@ -111,6 +111,11 @@ body .navbar {
     font-size: 70%;
 }
 
+.navbar .subtitle {
+  font-size: 70%;
+  padding-left: 1em;
+}
+
 
 /* --------------- PRIMARY SIDEBAR ---------------------- */
 
@@ -167,6 +172,17 @@ body .navbar {
     margin: 2em 0 0 2em;
 }
 
+.primary-sidebar .user-account {
+    margin-left: 2em;
+    margin-top: 0.5em;
+    color: white;
+}
+
+.primary-sidebar .username {
+    padding-right: 1em;
+}
+
+
 
 /* ----------- SMALL DEVICE OPTIMIZATIONS ---------------------- */
 
@@ -177,6 +193,10 @@ body .navbar {
   
   #main {
     margin: 84px 2em 0 0;
+  }
+  
+  .navbar .subtitle {
+    display: none;
   }
 }
 

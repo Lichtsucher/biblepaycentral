@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load humanize %}
+{% load emailalert %}
 
 {% block content %}
 
@@ -79,6 +80,7 @@ Budget: {{ data.next_budget|intcomma }} BBP
       <th scope="col">Yes</th>
       <th scope="col">No</th>
       <th scope="col">Total</th>
+      <th scope="col"></th>
     </tr>
   </thead>
   
@@ -95,6 +97,9 @@ Budget: {{ data.next_budget|intcomma }} BBP
         <td data-label="Yes">{{ proposal.yes_count }}</td>
         <td data-label="No">{{ proposal.no_count }}</td>
         <td data-label="Total">{{ proposal.absolute_yes_count }}</td>
+        <td data-label="Alert">
+            {% register_alert_button content_type.pk  proposal.pk 'proposals' %}
+        </td>
     </tr>
     {% endfor %}
   {% endfor %}

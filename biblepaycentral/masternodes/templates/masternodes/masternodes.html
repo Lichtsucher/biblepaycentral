@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load humanize %}
 {% load static %}
+{% load emailalert %}
 
 {% block content %}
 
@@ -29,6 +30,7 @@
       <th scope="col">Address</th>
       <th scope="col">Status</th>
       <th scope="col">Version</th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
@@ -39,6 +41,11 @@
       <td data-label="Address"><a href="https://explorer.biblepay-central.org/address/{{ masternode.address }}" target="_blank">{{ masternode.address }}</a></td>
       <td data-label="Status">{{ masternode.status }}</td>
       <td data-label="Version">{{ masternode.version }}</td>
+      <td data-label="Create alert">
+        
+        {% register_alert_button content_type.pk  masternode.pk 'masternodes_masternodes' %}
+        
+      </td>
     </tr>
     {% endfor %}
 

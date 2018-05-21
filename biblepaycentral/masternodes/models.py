@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from django.urls import reverse
 
 class Masternode(models.Model):
     # every masternode is bound to one transaction that shows the
@@ -21,6 +22,12 @@ class Masternode(models.Model):
     
     # version of the watchdog (?)
     version = models.IntegerField()
+    
+    def get_absolute_url(self):
+        return reverse('masternodes_masternodes')
+    
+    def __str__(self):
+        return self.txid
     
     def save(self, *args, **kwargs):
         # we check if the current database entry is different from this entry

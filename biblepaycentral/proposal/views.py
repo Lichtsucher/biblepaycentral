@@ -3,6 +3,7 @@ from collections import OrderedDict
 from django.db.models import Q, Max, Min
 from django.conf import settings
 from django.http import Http404
+from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404, render, redirect
 from biblepaycentral.biblepay.clients import BiblePayRpcClient
 from biblepaycentral.proposal.models import Proposal
@@ -35,6 +36,8 @@ def proposals(request, block=None):
         for prop_rar in proposals_raw:
             if prop_rar.expense_type == et[0]:
                 proposals[et[1]].append(prop_rar)
+                
+    content_type = ContentType.objects.get_for_model(Proposal)
     
     return render(request, 'proposal/proposals.html', {
             'requested_block': block,
@@ -42,6 +45,7 @@ def proposals(request, block=None):
             'proposals': proposals,
             'older_block': older_block,
             'newer_block': newer_block,
+            'content_type': content_type,
         })
 
 def details(request, proposal_id, network="main"):
