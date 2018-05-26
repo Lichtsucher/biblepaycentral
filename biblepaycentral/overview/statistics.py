@@ -220,8 +220,7 @@ def get_masternode_count():
         
         count = 0
         for key, value in client.rpc.masternodelist().items():
-            if value == 'ENABLED':
-                count += 1
+            count += 1
     except:
         pass
     

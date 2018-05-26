@@ -16,9 +16,6 @@
     <script src="{% static 'djangocms_bootstrap4/js/bundle.base.js' %}"></script>
     
     <link href="{% static 'responsive_table.css' %}" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'biblepaycentral.css' %}">
-    
-    
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -26,6 +23,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="{% static 'biblepaycentral.css' %}?v=3">
 
     {% render_block "css" %}
 </head>
@@ -42,13 +42,10 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-    
-            
-
-            
+           
     </nav>
 
-    <div class="primary-sidebar">
+    <div class="primary-sidebar" id="navbarSupportedContent">
         {% cache 6000 sidebar %}
         <div class="current-version">Current Version: {% current_biblepay_version %}</div>
         {% endcache %}

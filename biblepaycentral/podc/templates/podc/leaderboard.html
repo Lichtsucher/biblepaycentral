@@ -6,9 +6,26 @@
 {% block content %}
 <div class="container">
     Proof of Distributed Computing
+    
+    
     <h1>Leaderboard</h1>
     
     <br>
+
+    <b>User lookup</b>
+
+    <form action="/en/podc/find_user/" method="POST">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            <input type="text" name="search" class="form-control" placeholder="Find a user. Enter Name, CPID, Biblepay address or Rosetta ID">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">Lookup</button>
+            </div>
+        </div>
+    </form>
+    
+    <br>
+
     
     <table class="table responsive">
       <thead>

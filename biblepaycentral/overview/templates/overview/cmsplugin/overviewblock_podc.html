@@ -27,7 +27,7 @@
             <b>User lookup</b>
     
             <form action="/en/podc/find_user/" method="POST">
-                <input type="hidden" name="csrfmiddlewaretoken" value="LfPfkmw6XjlesFd52iZS3nruRrAU3NqTfGlS8m8U6wL4i4tRrGwIzAGA8Kl3DNxq">
+                {% csrf_token %}
                 <div class="input-group mb-3">
                     <input type="text" name="search" class="form-control" placeholder="Find a user. Enter Name, CPID, Biblepay address or Rosetta ID">
                     <div class="input-group-append">
