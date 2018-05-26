@@ -36,7 +36,7 @@
   <tbody>
     
     {% for masternode in masternodes %}
-    <tr>
+    <tr class="{% if masternode.status == 'ENABLED' %}table-success{% elif masternode.status == 'NEW_START_REQUIRED' %}table-danger{% else %}table-warning{% endif %}">
       <td data-label="TX" scope="row" style="font-size: 80%; word-break: break-all;"><a href="https://explorer.biblepay-central.org/tx/{{ masternode.txid|slice:"0:-2" }}" target="_blank">{{ masternode.txid }}</a></td>
       <td data-label="Address"><a href="https://explorer.biblepay-central.org/address/{{ masternode.address }}" target="_blank">{{ masternode.address }}</a></td>
       <td data-label="Status">{{ masternode.status }}</td>

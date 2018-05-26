@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from biblepaycentral.masternodes.models import Masternode, MasternodeHistory
 
 def masternodes(request):
-    masternodes = Masternode.objects.all().order_by('-last_seen_at')
+    masternodes = Masternode.objects.all().order_by('status', 'txid')
     
     status_count = {}
     for masternode in masternodes:
